@@ -1,0 +1,44 @@
+Несоответствия softfloat и стандарта.
+
+1) Странное поведение при генерировании NaN'ов
+   Вместо SNaN может генерироваться (-QNaN).
+2) При overflow генерируются +/- max, а надо +/- inf
+    Всё это блокированно в файле testLoops.c, функция test_abz_float32 (64),
+    см flag ignoreNaNs, ignoreInfOut.
+3) Странная геренация underflow (например для денормализованных чисел)
+    #define BLOCK_UNDERFLOW_FLAG - в softfloat.h
+
+
+Сборка: make all
+Результат: ~/tftpshare/ttf.ubi
+
+Главный файл, там, где main(), - testfloat.c
+
+
+Тестовые циклы расположены в файлах:
+  testLoops.h
+  testLoops.c
+
+каждый тестовый цикл представлен функцией с характерным именем. Например:
+
+  void test_a_int32_z_float32( float32 ( int32 ), float32 ( int32 ) );
+
+проверяет преобразование int32(a) -> float32(z)
+
+Первый параметер: float32 trueFunction(int32)
+Второй параметер: float32 testFunction(int32)
+
+Для этого примера
+  trueFunction: int32_to_float32() из softfloat.c / softfloat.h
+  testFunction: syst_int32_to_float32()  из systfloat.h / systfloat.S (ассемблер)
+
+Какие вообще существуют методы, задаётся в файле systfloat.h набором соответствующих #define,
+а потом в файле testFunction.c эти дефайны проставляют флаги существования.
+
+Дополнительно, в main() можно определить константу
+  functionCode = 0;
+которая говорит о том, тестировать ли все функции (0) или только одну.
+Если одну, то она выбирается по номеру в соответствии со
+списком в testFunction.cю
+
+В частности, int32_to_float32() имеет №1

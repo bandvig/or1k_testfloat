@@ -1,0 +1,8 @@
+*~
+*.o
+*.a
+*.bin
+*.dis
+*.elf
+*.vmem
+*.log
