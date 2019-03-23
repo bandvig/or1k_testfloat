@@ -34,7 +34,7 @@ Contributor Julius Baxter <julius.baxter@orsoc.se>
 //#include <spr-defs.h> // NewLIB 2.0.0
 #include <or1k-sprs.h>  // NewLIB 2.4.0+
 
-#include "systmodes.h"
+#include "milieu.h"
 
 /*
 -------------------------------------------------------------------------------

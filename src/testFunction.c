@@ -31,7 +31,6 @@ Contributor Julius Baxter <julius.baxter@orsoc.se>
 #include "testCases.h"
 #include "testLoops.h"
 #include "systmodes.h"
-#include "systflags.h"
 #include "systfloat.h"
 #include "testFunction.h"
 

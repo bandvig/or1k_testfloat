@@ -48,11 +48,6 @@ Contributor Julius Baxter <julius.baxter@orsoc.se>
 //#define FLOAT128
 
 /*----------------------------------------------------------------------------
-| Various temporary blocks
-*----------------------------------------------------------------------------*/
-#define BLOCK_UNDERFLOW_FLAG
-
-/*----------------------------------------------------------------------------
 | Software IEC/IEEE floating-point types.
 *----------------------------------------------------------------------------*/
 typedef unsigned int float32;

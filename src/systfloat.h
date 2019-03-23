@@ -28,8 +28,6 @@ Contributor Julius Baxter <julius.baxter@orsoc.se>
 #ifndef __SYST_FLOAT_H__
 #define __SYST_FLOAT_H__
 
-#include "milieu.h"
-
 /* ---------------------------------------------------------------------
 The following macros are defined to indicate that the corresponding
 functions exist.

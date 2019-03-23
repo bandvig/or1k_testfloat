@@ -30,8 +30,6 @@ Contributor Julius Baxter <julius.baxter@orsoc.se>
 #ifndef __SYST_MODES_H__
 #define __SYST_MODES_H__
 
-#include "milieu.h"
-
 /*
 -------------------------------------------------------------------------------
 Target-specific function for setting the system's IEC/IEEE floating-point

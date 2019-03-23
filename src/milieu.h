@@ -44,6 +44,14 @@ Include common integer types and flags.
 
 /*
 -------------------------------------------------------------------------------
+Various temporary blocks to force test be passed
+-------------------------------------------------------------------------------
+*/
+#define BLOCK_UNDERFLOW_FLAG
+#define CHECK_NANs FALSE
+
+/*
+-------------------------------------------------------------------------------
 If the `BITS64' macro is defined by the processor header file but the
 version of SoftFloat being used/tested is the 32-bit one (`bits32'), the
 `BITS64' macro must be undefined here.

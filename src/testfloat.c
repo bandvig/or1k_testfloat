@@ -41,7 +41,7 @@ Contributor Julius Baxter <julius.baxter@orsoc.se>
 #include "softfloat.h"
 #include "testCases.h"
 #include "testLoops.h"
-#include "systflags.h" // defines fpcsr_flags global
+#include "systflags.h"
 #include "testFunction.h"
 
 
@@ -94,8 +94,6 @@ void float_except_handler(void)
   unsigned int value;
   //unsigned int v_sr;
 
-  // Clear the global we'll use
-  fpcsr_flags = 0;
   /* NewLIB 2.0.0
   // Read the SPR
   value = (unsigned int)or1k_mfspr(SPR_FPCSR);
@@ -103,48 +101,17 @@ void float_except_handler(void)
   //v_sr  = (unsigned int)or1k_mfspr(SPR_SR);
   //  printf("  FPU handler: Read FPCSR: %08X  SM=%1d\r\n", value,(v_sr&1));
 
-  // Extract the flags from OR1K's FPCSR, put into testfloat's flags format
-  if (value & SPR_FPCSR_IXF)
-    fpcsr_flags |= float_flag_inexact;
-
-  if (value & SPR_FPCSR_UNF)
-    fpcsr_flags |= float_flag_underflow;
-
-  if (value & SPR_FPCSR_OVF)
-    fpcsr_flags |= float_flag_overflow;
-
-  if (value & SPR_FPCSR_DZF)
-    fpcsr_flags |= float_flag_divbyzero;
-
-  if (value & SPR_FPCSR_IVF)
-    fpcsr_flags |= float_flag_invalid;
-
   // drop FP-Exception-Enabled and write back to FPCSR
   value = value & (~SPR_FPCSR_FPEE);
   or1k_mtspr(SPR_FPCSR,value);
   */
+
   // NewLIB 2.4.0+
   // Read the SPR
   value = (unsigned int)or1k_mfspr(OR1K_SPR_SYS_FPCSR_ADDR);
 
-  //v_sr  = (unsigned int)or1k_mfspr(SPR_SR);
+  //v_sr  = (unsigned int)or1k_mfspr(OR1K_SPR_SYS_SR_ADDR);
   //  printf("  FPU handler: Read FPCSR: %08X  SM=%1d\r\n", value,(v_sr&1));
-
-  // Extract the flags from OR1K's FPCSR, put into testfloat's flags format
-  if (OR1K_SPR_SYS_FPCSR_IXF_GET(value) != 0)
-    fpcsr_flags |= float_flag_inexact;
-
-  if (OR1K_SPR_SYS_FPCSR_UNF_GET(value) != 0)
-    fpcsr_flags |= float_flag_underflow;
-
-  if (OR1K_SPR_SYS_FPCSR_OVF_GET(value) != 0)
-    fpcsr_flags |= float_flag_overflow;
-
-  if (OR1K_SPR_SYS_FPCSR_DZF_GET(value) != 0)
-    fpcsr_flags |= float_flag_divbyzero;
-
-  if (OR1K_SPR_SYS_FPCSR_IVF_GET(value) != 0)
-    fpcsr_flags |= float_flag_invalid;
 
   // drop FP-Exception-Enabled and write back to FPCSR
   value = OR1K_SPR_SYS_FPCSR_FPEE_SET(value, 0x0u);
@@ -168,7 +135,7 @@ int main( int argc, char **argv )
     // Illegal Instruction Handler
     or1k_exception_handler_add(0x7, illegal_insn_handler);
     // Add exception handler for floating point exception
-    or1k_exception_handler_add(0xd, float_except_handler);
+    //or1k_exception_handler_add(0xd, float_except_handler);
 
     printf("Testfloat start.\r\n");
 
@@ -181,7 +148,7 @@ int main( int argc, char **argv )
     forever = FALSE;
     maxErrorCount = 1;
     trueFlagsPtr = &float_exception_flags;
-    testFlagsFunctionPtr = syst_float_flags_clear;
+    testFlagsFunctionPtr = syst_float_flags_read;
     tininessModeName = "after";
     float_detect_tininess = float_tininess_after_rounding;
     operands = 0;

@@ -30,17 +30,12 @@ Contributor Julius Baxter <julius.baxter@orsoc.se>
 #ifndef __SYST_FLAGS_H__
 #define __SYST_FLAGS_H__
 
-#include "milieu.h"
-
 /*
 -------------------------------------------------------------------------------
-Target-specific function for clearing the system's IEC/IEEE floating-point
-exception flags.  The previous value of the flags is returned.
+Target-specific function for access floating-point flags.
 -------------------------------------------------------------------------------
 */
-int8 syst_float_flags_clear( void );
 
-// Extern flags value - stored in softfloat's format, not OR1K's fpcsr format
-extern int8 fpcsr_flags;
+int8 syst_float_flags_read( void );
 
 #endif // __SYST_FLAGS_H__

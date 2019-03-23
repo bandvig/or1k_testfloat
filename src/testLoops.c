@@ -34,7 +34,6 @@ Contributor Julius Baxter <julius.baxter@orsoc.se>
 #include "writeHex.h"
 #include "testLoops.h"
 
-extern void or1k_reset_fpcsr(void);
 extern void or1k_printf_fpcsr(void);
 extern void syst_print_fpcsr_fields(void);
 //extern void or1k_report(unsigned long int); // NewLIB 2.4.0+
@@ -44,7 +43,7 @@ volatile flag stop = FALSE;
 char *trueName, *testName;
 flag forever, errorStop;
 uint32 maxErrorCount = 0;
-flag checkNaNs = FALSE;
+flag checkNaNs = CHECK_NANs;
 int8 *trueFlagsPtr;
 int8 ( *testFlagsFunctionPtr )( void );
 char *functionName;
@@ -476,20 +475,22 @@ void
     testCases_initSequence( testCases_sequence_a_int32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_int32 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
-        //or1k_printf_fpcsr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_int32 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float32_isANaN( trueZ )
@@ -508,14 +509,13 @@ void
                 if ( errorCount == maxErrorCount ) exit(1); // goto l_exit;
             }
         }
-#if V_SHORT_TESTS==1
-  // early test finish hack
-  if (count == 9990) testCases_done = 1;
-#endif
+       #if V_SHORT_TESTS==1
+        // early test finish hack
+        if (count == 9990) testCases_done = 1;
+       #endif
     }
  l_exit:
     writeTestsPerformed( 10000 - count );
-
 }
 
 void
@@ -532,20 +532,22 @@ void
     testCases_initSequence( testCases_sequence_a_int32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_int32 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_int32 );
         testFlags = testFlagsFunctionPtr();
-        //or1k_report(count); // Indicate that tests are still going! // NewLIB 2.4.0+
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float64_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float64_isNaN( trueZ )
@@ -568,7 +570,6 @@ void
     }
  l_exit:
     writeTestsPerformed( 10000 - count );
-
 }
 
 #ifdef FLOATX80
@@ -587,19 +588,22 @@ void
     testCases_initSequence( testCases_sequence_a_int32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_int32 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_int32 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! floatx80_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && floatx80_isNaN( trueZ )
@@ -643,19 +647,22 @@ void
     testCases_initSequence( testCases_sequence_a_int32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_int32 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_int32 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float128_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float128_isNaN( trueZ )
@@ -699,19 +706,22 @@ void
     testCases_initSequence( testCases_sequence_a_int64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_int64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_int64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float32_isANaN( trueZ )
@@ -751,19 +761,22 @@ void
     testCases_initSequence( testCases_sequence_a_int64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_int64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_int64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float64_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float64_isNaN( trueZ )
@@ -805,19 +818,22 @@ void
     testCases_initSequence( testCases_sequence_a_int64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_int64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_int64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! floatx80_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && floatx80_isNaN( trueZ )
@@ -861,19 +877,22 @@ void
     testCases_initSequence( testCases_sequence_a_int64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_int64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_int64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float128_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float128_isNaN( trueZ )
@@ -916,20 +935,22 @@ void
     testCases_initSequence( testCases_sequence_a_float32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
-    // check results
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float32_is_signaling_nan( testCases_a_float32 ) ) {
@@ -979,19 +1000,22 @@ void
     testCases_initSequence( testCases_sequence_a_float32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float32_is_signaling_nan( testCases_a_float32 ) ) {
@@ -1037,19 +1061,22 @@ void
     testCases_initSequence( testCases_sequence_a_float32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float64_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float32_is_signaling_nan( testCases_a_float32 ) ) {
@@ -1095,19 +1122,22 @@ void
     testCases_initSequence( testCases_sequence_a_float32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! floatx80_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float32_is_signaling_nan( testCases_a_float32 ) ) {
@@ -1155,19 +1185,22 @@ void
     testCases_initSequence( testCases_sequence_a_float32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float128_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float32_is_signaling_nan( testCases_a_float32 ) ) {
@@ -1213,19 +1246,22 @@ void
     testCases_initSequence( testCases_sequence_a_float32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float32_is_signaling_nan( testCases_a_float32 ) ) {
@@ -1275,21 +1311,24 @@ void
     testCases_initSequence( testCases_sequence_ab_float32 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float32, testCases_b_float32 );
         trueFlags = *trueFlagsPtr;
+        // compute by system uder test
         //  printf("  a: %08X  b: %08X\r\n",testCases_a_float32,testCases_b_float32);
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
         testZ = testFunction( testCases_a_float32, testCases_b_float32 );
         testFlags = testFlagsFunctionPtr();
         //  printf("  tZ: %d  tF: %d\r\n",testZ,testFlags);
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && (    float32_is_signaling_nan( testCases_a_float32 )
@@ -1344,8 +1383,6 @@ void test_abz_float32(
     trueFlags = *trueFlagsPtr;
 
     // compute by system uder test
-    or1k_reset_fpcsr();
-    testFlagsFunctionPtr();
     testZ = testFunction( testCases_a_float32, testCases_b_float32 );
     testFlags = testFlagsFunctionPtr();
 
@@ -1366,7 +1403,6 @@ void test_abz_float32(
       testFlags = testFlags & (~float_flag_underflow);
     }
    #endif
-
 
     if ( (trueZ != testZ) || (trueFlags != testFlags) )
     {
@@ -1428,19 +1464,22 @@ void
     testCases_initSequence( testCases_sequence_a_float64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float64_is_signaling_nan( testCases_a_float64 ) ) {
@@ -1486,19 +1525,22 @@ void
     testCases_initSequence( testCases_sequence_a_float64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float64_is_signaling_nan( testCases_a_float64 ) ) {
@@ -1544,19 +1586,22 @@ void
     testCases_initSequence( testCases_sequence_a_float64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float64_is_signaling_nan( testCases_a_float64 ) ) {
@@ -1602,19 +1647,22 @@ void
     testCases_initSequence( testCases_sequence_a_float64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! floatx80_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float64_is_signaling_nan( testCases_a_float64 ) ) {
@@ -1662,19 +1710,22 @@ void
     testCases_initSequence( testCases_sequence_a_float64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float128_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float64_is_signaling_nan( testCases_a_float64 ) ) {
@@ -1720,19 +1771,22 @@ void
     testCases_initSequence( testCases_sequence_a_float64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float64_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float64_is_signaling_nan( testCases_a_float64 ) ) {
@@ -1778,19 +1832,22 @@ void
     testCases_initSequence( testCases_sequence_ab_float64 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float64, testCases_b_float64 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float64, testCases_b_float64 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && (    float64_is_signaling_nan( testCases_a_float64 )
@@ -1833,15 +1890,19 @@ void test_abz_float64(
   writeTestsTotal();
   while ( ! testCases_done || forever )
   {
+    // next inputs
     testCases_next();
+
+    // generate reference
     *trueFlagsPtr = 0;
     trueZ = trueFunction( testCases_a_float64, testCases_b_float64 );
     trueFlags = *trueFlagsPtr;
-    or1k_reset_fpcsr();
-    (void) testFlagsFunctionPtr();
+
+    // compute by system uder test
     testZ = testFunction( testCases_a_float64, testCases_b_float64 );
     testFlags = testFlagsFunctionPtr();
 
+    // progress counter
     --count;
     if ( count == 0 ) {
         checkEarlyExit();
@@ -1921,19 +1982,22 @@ void
     testCases_initSequence( testCases_sequence_a_floatx80 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && floatx80_is_signaling_nan( testCases_a_floatx80 ) ) {
@@ -1979,19 +2043,22 @@ void
     testCases_initSequence( testCases_sequence_a_floatx80 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && floatx80_is_signaling_nan( testCases_a_floatx80 ) ) {
@@ -2037,19 +2104,22 @@ void
     testCases_initSequence( testCases_sequence_a_floatx80 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && floatx80_is_signaling_nan( testCases_a_floatx80 ) ) {
@@ -2093,19 +2163,22 @@ void
     testCases_initSequence( testCases_sequence_a_floatx80 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float64_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && floatx80_is_signaling_nan( testCases_a_floatx80 ) ) {
@@ -2151,19 +2224,22 @@ void
     testCases_initSequence( testCases_sequence_a_floatx80 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float128_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && floatx80_is_signaling_nan( testCases_a_floatx80 ) ) {
@@ -2209,19 +2285,22 @@ void
     testCases_initSequence( testCases_sequence_a_floatx80 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! floatx80_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && floatx80_is_signaling_nan( testCases_a_floatx80 ) ) {
@@ -2267,19 +2346,22 @@ void
     testCases_initSequence( testCases_sequence_ab_floatx80 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_floatx80, testCases_b_floatx80 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_floatx80, testCases_b_floatx80 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && (    floatx80_is_signaling_nan( testCases_a_floatx80 )
@@ -2320,19 +2402,22 @@ void
     testCases_initSequence( testCases_sequence_ab_floatx80 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_floatx80, testCases_b_floatx80 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_floatx80, testCases_b_floatx80 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! floatx80_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && (    floatx80_is_signaling_nan( testCases_a_floatx80 )
@@ -2383,19 +2468,22 @@ void
     testCases_initSequence( testCases_sequence_a_float128 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float128_is_signaling_nan( testCases_a_float128 ) ) {
@@ -2441,19 +2529,22 @@ void
     testCases_initSequence( testCases_sequence_a_float128 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float128_is_signaling_nan( testCases_a_float128 ) ) {
@@ -2499,19 +2590,22 @@ void
     testCases_initSequence( testCases_sequence_a_float128 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float128_is_signaling_nan( testCases_a_float128 ) ) {
@@ -2555,19 +2649,22 @@ void
     testCases_initSequence( testCases_sequence_a_float128 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float64_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float128_is_signaling_nan( testCases_a_float128 ) ) {
@@ -2613,19 +2710,22 @@ void
     testCases_initSequence( testCases_sequence_a_float128 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! floatx80_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float128_is_signaling_nan( testCases_a_float128 ) ) {
@@ -2671,19 +2771,22 @@ void
     testCases_initSequence( testCases_sequence_a_float128 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float128_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && float128_is_signaling_nan( testCases_a_float128 ) ) {
@@ -2729,19 +2832,22 @@ void
     testCases_initSequence( testCases_sequence_ab_float128 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float128, testCases_b_float128 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float128, testCases_b_float128 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ( trueZ != testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && (    float128_is_signaling_nan( testCases_a_float128 )
@@ -2782,19 +2888,22 @@ void
     testCases_initSequence( testCases_sequence_ab_float128 );
     writeTestsTotal();
     while ( ! testCases_done || forever ) {
+        // next inputs
         testCases_next();
+        // generate reference
         *trueFlagsPtr = 0;
         trueZ = trueFunction( testCases_a_float128, testCases_b_float128 );
         trueFlags = *trueFlagsPtr;
-        or1k_reset_fpcsr();
-        (void) testFlagsFunctionPtr();
+        // compute by system uder test
         testZ = testFunction( testCases_a_float128, testCases_b_float128 );
         testFlags = testFlagsFunctionPtr();
+        // progress counter
         --count;
         if ( count == 0 ) {
             checkEarlyExit();
             count = 10000;
         }
+        // check results
         if ( ! float128_same( trueZ, testZ ) || ( trueFlags != testFlags ) ) {
             if (    ! checkNaNs
                  && (    float128_is_signaling_nan( testCases_a_float128 )

@@ -6,7 +6,7 @@
     Всё это блокированно в файле testLoops.c, функция test_abz_float32 (64),
     см flag ignoreNaNs, ignoreInfOut.
 3) Странная геренация underflow (например для денормализованных чисел)
-    #define BLOCK_UNDERFLOW_FLAG - в softfloat.h
+    #define BLOCK_UNDERFLOW_FLAG - в milieu.h
 
 
 Сборка: make all
