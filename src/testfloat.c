@@ -46,35 +46,23 @@ Contributor Julius Baxter <julius.baxter@orsoc.se>
 
 
 
-// clears exeption flags
-// keeps roundig modes
 // enables "floating point exeption"
-void or1k_reset_fpcsr(void)
+void testEnableFpException(void)
 {
   // Read the FPCSR
   /* NewLIB 2.0.0
   unsigned int value = (unsigned int)or1k_mfspr(SPR_FPCSR);
   //unsigned int v_sr  = (unsigned int)or1k_mfspr(SPR_SR);
-  //  printf("\r\n  Enable FPEE. Read FPSCR: %08X  SM=%1d\r\n", value,(v_sr&1));
-  value = ((value & (~SPR_FPCSR_ALLF)) | SPR_FPCSR_FPEE);
- #ifdef SPR_FPCSR_MASK_FLAGS
-  value = (value | SPR_FPCSR_ENA_ALLF);
- #endif
-  //  printf("  Enable FPEE: Write FPCSR: %08X\r\n", value);
+  //  printf("\r\n  Enable FPEE. FPSCR: %08X  SM: %1d\r\n", value,(v_sr&1));
+  value = value | SPR_FPCSR_FPEE;
   // Write value back to FPCSR
   or1k_mtspr(SPR_FPCSR,value);
   */
   // NewLIB 2.4.0+
   unsigned int value = (unsigned int)or1k_mfspr(OR1K_SPR_SYS_FPCSR_ADDR);
-  unsigned int round = OR1K_SPR_SYS_FPCSR_RM_GET(value);
   //unsigned int v_sr  = (unsigned int)or1k_mfspr(OR1K_SPR_SYS_SR_ADDR);
-  //  printf("\r\n  Enable FPEE. Read FPSCR: %08X  SM=%1d\r\n", value,(v_sr&1));
-  value = OR1K_SPR_SYS_FPCSR_RM_SET(0x0u,round);
- #ifdef SPR_FPCSR_MASK_FLAGS
-  value = ?! (value | SPR_FPCSR_ENA_ALLF);
- #endif
+  //  printf("\r\n  Enable FPEE. FPSCR: %08X  SM: %1d\r\n", value,(v_sr&1));
   value = OR1K_SPR_SYS_FPCSR_FPEE_SET(value,0x1u);
-  //  printf("  Enable FPEE: Write FPCSR: %08X\r\n", value);
   // Write value back to FPCSR
   or1k_mtspr(OR1K_SPR_SYS_FPCSR_ADDR,value);
 }
@@ -86,13 +74,23 @@ void or1k_printf_fpcsr(void)
    printf("  FPCSR: %08X\r\n", value);
 }
 
-  // Interrupt handler for floating point exceptions
-  // Just copy out the flags and go back to work...
+// If FP-exception is enable we just count number of such exceptions.
+static unsigned int fp_exceptions_cnt = 0;
+
+// Interrupt handler for floating point exceptions
+//  - increment FP-exceptions counter
+//  - clean up SR[FPEE] bit (disable FP-exceptions to continue tests)
 void float_except_handler(void)
 {
   // Read the FPCSR
   unsigned int value;
   //unsigned int v_sr;
+
+  ++fp_exceptions_cnt;
+
+  // MAROCCHINO_TODO: all following code should be commented after
+  //                  implementation FP-exceptions processing in
+  //                  according with architectural manual
 
   /* NewLIB 2.0.0
   // Read the SPR
@@ -135,7 +133,7 @@ int main( int argc, char **argv )
     // Illegal Instruction Handler
     or1k_exception_handler_add(0x7, illegal_insn_handler);
     // Add exception handler for floating point exception
-    //or1k_exception_handler_add(0xd, float_except_handler);
+    or1k_exception_handler_add(0xd, float_except_handler);
 
     printf("Testfloat start.\r\n");
 
@@ -207,8 +205,15 @@ int main( int argc, char **argv )
             }
 
     }
+
+   #ifdef ENABLE_FP_EXCEPTION
+    printf("Exceptions enabled: %u\r\n", fp_exceptions_cnt);
+   #else
+    printf("Exceptions disabled: %u\r\n", fp_exceptions_cnt);
+   #endif
+
     exitWithStatus();
 
     // Should never reach here
     return 0;
-}
+} // main()

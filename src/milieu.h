@@ -44,11 +44,18 @@ Include common integer types and flags.
 
 /*
 -------------------------------------------------------------------------------
-Various temporary blocks to force test be passed
+Various temporary blocks to force tests be passed
 -------------------------------------------------------------------------------
 */
 #define BLOCK_UNDERFLOW_FLAG
 #define CHECK_NANs FALSE
+
+/*
+-------------------------------------------------------------------------------
+Any FP flag causes FP exception
+-------------------------------------------------------------------------------
+#define ENABLE_FP_EXCEPTION
+*/
 
 /*
 -------------------------------------------------------------------------------

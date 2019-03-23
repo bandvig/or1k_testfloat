@@ -43,9 +43,16 @@ volatile flag stop = FALSE;
 char *trueName, *testName;
 flag forever, errorStop;
 uint32 maxErrorCount = 0;
+
 flag checkNaNs = CHECK_NANs;
+
 int8 *trueFlagsPtr;
 int8 ( *testFlagsFunctionPtr )( void );
+
+#ifdef ENABLE_FP_EXCEPTION
+extern void testEnableFpException(void);
+#endif
+
 char *functionName;
 char *roundingPrecisionName, *roundingModeName, *tininessModeName;
 flag anyErrors = FALSE;
@@ -482,6 +489,9 @@ void
         trueZ = trueFunction( testCases_a_int32 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_int32 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -539,6 +549,9 @@ void
         trueZ = trueFunction( testCases_a_int32 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_int32 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -595,6 +608,9 @@ void
         trueZ = trueFunction( testCases_a_int32 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_int32 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -654,6 +670,9 @@ void
         trueZ = trueFunction( testCases_a_int32 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_int32 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -713,6 +732,9 @@ void
         trueZ = trueFunction( testCases_a_int64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_int64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -768,6 +790,9 @@ void
         trueZ = trueFunction( testCases_a_int64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_int64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -825,6 +850,9 @@ void
         trueZ = trueFunction( testCases_a_int64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_int64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -884,6 +912,9 @@ void
         trueZ = trueFunction( testCases_a_int64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_int64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -942,6 +973,9 @@ void
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1007,6 +1041,9 @@ void
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1068,6 +1105,9 @@ void
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1129,6 +1169,9 @@ void
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1192,6 +1235,9 @@ void
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1253,6 +1299,9 @@ void
         trueZ = trueFunction( testCases_a_float32 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float32 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1319,6 +1368,9 @@ void
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
         //  printf("  a: %08X  b: %08X\r\n",testCases_a_float32,testCases_b_float32);
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float32, testCases_b_float32 );
         testFlags = testFlagsFunctionPtr();
         //  printf("  tZ: %d  tF: %d\r\n",testZ,testFlags);
@@ -1383,6 +1435,9 @@ void test_abz_float32(
     trueFlags = *trueFlagsPtr;
 
     // compute by system uder test
+   #ifdef ENABLE_FP_EXCEPTION
+    testEnableFpException();
+   #endif
     testZ = testFunction( testCases_a_float32, testCases_b_float32 );
     testFlags = testFlagsFunctionPtr();
 
@@ -1471,6 +1526,9 @@ void
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1532,6 +1590,9 @@ void
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1593,6 +1654,9 @@ void
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1654,6 +1718,9 @@ void
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1717,6 +1784,9 @@ void
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1778,6 +1848,9 @@ void
         trueZ = trueFunction( testCases_a_float64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1839,6 +1912,9 @@ void
         trueZ = trueFunction( testCases_a_float64, testCases_b_float64 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float64, testCases_b_float64 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -1899,6 +1975,9 @@ void test_abz_float64(
     trueFlags = *trueFlagsPtr;
 
     // compute by system uder test
+   #ifdef ENABLE_FP_EXCEPTION
+    testEnableFpException();
+   #endif
     testZ = testFunction( testCases_a_float64, testCases_b_float64 );
     testFlags = testFlagsFunctionPtr();
 
@@ -1989,6 +2068,9 @@ void
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2050,6 +2132,9 @@ void
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2111,6 +2196,9 @@ void
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2170,6 +2258,9 @@ void
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2231,6 +2322,9 @@ void
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2292,6 +2386,9 @@ void
         trueZ = trueFunction( testCases_a_floatx80 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_floatx80 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2353,6 +2450,9 @@ void
         trueZ = trueFunction( testCases_a_floatx80, testCases_b_floatx80 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_floatx80, testCases_b_floatx80 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2409,6 +2509,9 @@ void
         trueZ = trueFunction( testCases_a_floatx80, testCases_b_floatx80 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_floatx80, testCases_b_floatx80 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2475,6 +2578,9 @@ void
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2536,6 +2642,9 @@ void
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2597,6 +2706,9 @@ void
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2656,6 +2768,9 @@ void
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2717,6 +2832,9 @@ void
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2778,6 +2896,9 @@ void
         trueZ = trueFunction( testCases_a_float128 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float128 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2839,6 +2960,9 @@ void
         trueZ = trueFunction( testCases_a_float128, testCases_b_float128 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float128, testCases_b_float128 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
@@ -2895,6 +3019,9 @@ void
         trueZ = trueFunction( testCases_a_float128, testCases_b_float128 );
         trueFlags = *trueFlagsPtr;
         // compute by system uder test
+       #ifdef ENABLE_FP_EXCEPTION
+        testEnableFpException();
+       #endif
         testZ = testFunction( testCases_a_float128, testCases_b_float128 );
         testFlags = testFlagsFunctionPtr();
         // progress counter
