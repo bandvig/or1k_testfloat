@@ -79,18 +79,12 @@ static unsigned int fp_exceptions_cnt = 0;
 
 // Interrupt handler for floating point exceptions
 //  - increment FP-exceptions counter
-//  - clean up SR[FPEE] bit (disable FP-exceptions to continue tests)
 void float_except_handler(void)
 {
-  // Read the FPCSR
-  unsigned int value;
+  //unsigned int value;
   //unsigned int v_sr;
 
   ++fp_exceptions_cnt;
-
-  // MAROCCHINO_TODO: all following code should be commented after
-  //                  implementation FP-exceptions processing in
-  //                  according with architectural manual
 
   /* NewLIB 2.0.0
   // Read the SPR
@@ -104,7 +98,7 @@ void float_except_handler(void)
   or1k_mtspr(SPR_FPCSR,value);
   */
 
-  // NewLIB 2.4.0+
+  /* NewLIB 2.4.0+
   // Read the SPR
   value = (unsigned int)or1k_mfspr(OR1K_SPR_SYS_FPCSR_ADDR);
 
@@ -114,6 +108,7 @@ void float_except_handler(void)
   // drop FP-Exception-Enabled and write back to FPCSR
   value = OR1K_SPR_SYS_FPCSR_FPEE_SET(value, 0x0u);
   or1k_mtspr(OR1K_SPR_SYS_FPCSR_ADDR,value);
+  */
 }
 
  // Illegal Instruction Handler
