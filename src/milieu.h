@@ -55,7 +55,7 @@ Various temporary blocks to force tests be passed
 Any FP flag causes FP exception
 -------------------------------------------------------------------------------
 */
-#define ENABLE_FP_EXCEPTION
+//#define ENABLE_FP_EXCEPTION
 
 /*
 -------------------------------------------------------------------------------

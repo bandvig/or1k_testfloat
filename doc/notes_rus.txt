@@ -9,8 +9,8 @@
     #define BLOCK_UNDERFLOW_FLAG - в milieu.h
 
 
-Сборка: make all
-Результат: ~/tftpshare/ttf.ubi
+Сборка: make
+Результат: ~/tftpshare/tfall.ubi
 
 Главный файл, там, где main(), - testfloat.c
 

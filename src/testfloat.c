@@ -150,21 +150,23 @@ int main( int argc, char **argv )
                      //0 - for do all rounding modes
     // "all" setting:
     functionArgument = TRUE;
-    functionCode = 0; // See testFunction.c for list.
-    // 0  = all possible functions
+    functionCode = 0;
+    // See testFunction.c for list of all functions.
+    // See systfloat.h for definition of present functions.
+    //  0 = all possible functions
     // --- single precision ---
-    //  1 = int32_to_float32 :
-    //  9 = float32_to_int32 :
-    // 17 = float32_add :
-    // 18 = float32_sub :
-    // 19 = float32_mul :
-    // 20 = float32_div :
-    // 23 = float32_eq  :
-    // 24 = float32_le  :
-    // 25 = float32_lt  :
+    //  1 = int32_to_float32
+    // 10 = float32_to_int32_round_to_zero
+    // 17 = float32_add
+    // 18 = float32_sub
+    // 19 = float32_mul
+    // 20 = float32_div
+    // 23 = float32_eq
+    // 24 = float32_le
+    // 25 = float32_lt
     // --- double precision ---
     //  6 = int64_to_float64
-    // 31 = float64_to_int64
+    // 32 = float64_to_int64_round_to_zero
     // 37 = float64_add
     // 38 = float64_sub
     // 39 = float64_mul

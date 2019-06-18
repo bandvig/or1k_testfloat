@@ -34,17 +34,17 @@ functions exist.
 Single precision.
 --------------------------------------------------------------------- */
 #ifdef SYST_FLOAT32 // from GCC's command line
-  #define SYST_INT32_TO_FLOAT32
-  #define SYST_FLOAT32_TO_INT32
-  //#define SYST_FLOAT32_TO_INT32_ROUND_TO_ZERO // covered by previous
-  //#define SYST_FLOAT32_ROUND_TO_INT // Actually not something we support!
-  #define SYST_FLOAT32_ADD
-  #define SYST_FLOAT32_SUB
-  #define SYST_FLOAT32_MUL
-  #define SYST_FLOAT32_DIV
-  #define SYST_FLOAT32_EQ
-  #define SYST_FLOAT32_LE
-  #define SYST_FLOAT32_LT
+  #define SYST_INT32_TO_FLOAT32 // 1
+  //#define SYST_FLOAT32_TO_INT32 // 9
+  #define SYST_FLOAT32_TO_INT32_ROUND_TO_ZERO // 10
+  //#define SYST_FLOAT32_ROUND_TO_INT // 16
+  #define SYST_FLOAT32_ADD // 17
+  #define SYST_FLOAT32_SUB // 18
+  #define SYST_FLOAT32_MUL // 19
+  #define SYST_FLOAT32_DIV // 20
+  #define SYST_FLOAT32_EQ  // 23
+  #define SYST_FLOAT32_LE  // 24
+  #define SYST_FLOAT32_LT  // 25
 #endif // SYST_FLOAT32
 
 /* ---------------------------------------------------------------------
@@ -54,8 +54,8 @@ Double precision.
 --------------------------------------------------------------------- */
 #ifdef SYST_FLOAT64 // from GCC's command line
   #define SYST_INT64_TO_FLOAT64 //  6
-  #define SYST_FLOAT64_TO_INT64  // 31
-  //#define SYST_FLOAT64_TO_INT64_ROUND_TO_ZERO  // 32 : covered by previous
+  //#define SYST_FLOAT64_TO_INT64 // 31
+  #define SYST_FLOAT64_TO_INT64_ROUND_TO_ZERO // 32
   #define SYST_FLOAT64_ADD // 37
   #define SYST_FLOAT64_SUB // 38
   #define SYST_FLOAT64_MUL // 39
