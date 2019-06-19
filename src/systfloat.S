@@ -174,19 +174,19 @@ Long-Long to Double
   .align 4
   .global syst_int64_to_float64
 syst_int64_to_float64:
-  /* GCC5 */
+  /* GCC5
   lf.itof.d r11,r3
   l.jr r9
   l.nop
-
-  /* GCC9
+  */
+  /* GCC9 */
   l.or r17,r3,r3
   l.or r19,r4,r4
-  lf.itof.d r17,r17
+  lf.itof.d r17,r19,r17,r19
   l.or r11,r17,r17
   l.jr r9
   l.or r12,r19,r19
-  */
+
 /*
 -------------------------------------------------------------------------------
 Double to Long-Long.
@@ -195,19 +195,19 @@ Double to Long-Long.
   .align 4
   .global syst_float64_to_int64
 syst_float64_to_int64:
-  /* GCC5 */
+  /* GCC5
   lf.ftoi.d r11,r3
   l.jr r9
   l.nop
-
-  /* GCC9
+  */
+  /* GCC9 */
   l.or r17,r3,r3
   l.or r19,r4,r4
-  lf.ftoi.d r17,r17
+  lf.ftoi.d r17,r19,r17,r19
   l.or r11,r17,r17
   l.jr r9
   l.or r12,r19,r19
-  */
+
 
 /*
 -------------------------------------------------------------------------------
@@ -217,19 +217,19 @@ Double to Long-Long with rounding to zero. Actually same to previous
   .align 4
   .global syst_float64_to_int64_round_to_zero
 syst_float64_to_int64_round_to_zero:
-  /* GCC5 */
+  /* GCC5
   lf.ftoi.d r11,r3
   l.jr r9
   l.nop
-
-  /* GCC9
+  */
+  /* GCC9 */
   l.or r17,r3,r3
   l.or r19,r4,r4
-  lf.ftoi.d r17,r17
+  lf.ftoi.d r17,r19,r17,r19
   l.or r11,r17,r17
   l.jr r9
   l.or r12,r19,r19
-  */
+
 /*
 -------------------------------------------------------------------------------
 Double addition
@@ -238,44 +238,44 @@ Double addition
   .align 4
   .global syst_float64_add
 syst_float64_add:
-  /* GCC5 */
+  /* GCC5
   lf.add.d r11,r3,r5
   l.jr r9
   l.nop 0x0
-
-  /* GCC9
+  */
+  /* GCC9 */
   l.or r17,r3,r3
   l.or r21,r5,r5
   l.or r19,r4,r4
   l.or r23,r6,r6
-  lf.add.d r17,r17,r21
+  lf.add.d r17,r19,r17,r19,r21,r23
   l.or r11,r17,r17
   l.jr r9
   l.or r12,r19,r19
-  */
+
 /*
 -------------------------------------------------------------------------------
-Double substruction
+Double subtraction
 -------------------------------------------------------------------------------
 */
   .align 4
   .global syst_float64_sub
 syst_float64_sub:
-  /* GCC5 */
+  /* GCC5
   lf.sub.d r11,r3,r5
   l.jr r9
   l.nop 0x0
-
-  /* GCC9
+  */
+  /* GCC9 */
   l.or r17,r3,r3
   l.or r21,r5,r5
   l.or r19,r4,r4
   l.or r23,r6,r6
-  lf.sub.d r17,r17,r21
+  lf.sub.d r17,r19,r17,r19,r21,r23
   l.or r11,r17,r17
   l.jr r9
   l.or r12,r19,r19
-  */
+
 /*
 -------------------------------------------------------------------------------
 Duoble multiplication
@@ -284,21 +284,21 @@ Duoble multiplication
   .align 4
   .global syst_float64_mul
 syst_float64_mul:
-  /* GCC5 */
+  /* GCC5
   lf.mul.d r11,r3,r5
   l.jr r9
   l.nop 0x0
-
-  /* GCC9
+  */
+  /* GCC9 */
   l.or r17,r3,r3
   l.or r21,r5,r5
   l.or r19,r4,r4
   l.or r23,r6,r6
-  lf.mul.d r17,r17,r21
+  lf.mul.d r17,r19,r17,r19,r21,r23
   l.or r11,r17,r17
   l.jr r9
   l.or r12,r19,r19
-  */
+
 /*
 -------------------------------------------------------------------------------
 Double division
@@ -307,21 +307,21 @@ Double division
   .align 4
   .global syst_float64_div
 syst_float64_div:
-  /* GCC5 */
+  /* GCC5
   lf.div.d r11,r3,r5
   l.jr r9
   l.nop 0x0
-
-  /* GCC9
+  */
+  /* GCC9 */
   l.or r17,r3,r3
   l.or r21,r5,r5
   l.or r19,r4,r4
   l.or r23,r6,r6
-  lf.div.d r17,r17,r21
+  lf.div.d r17,r19,r17,r19,r21,r23
   l.or r11,r17,r17
   l.jr r9
   l.or r12,r19,r19
-  */
+
 /*
 -------------------------------------------------------------------------------
 Double A == Double B
@@ -330,7 +330,7 @@ Double A == Double B
   .align 4
   .global syst_float64_eq
 syst_float64_eq:
-  /* GCC5 */
+  /* GCC5
   lf.sfeq.d r3,r5
   l.bnf f64eq_exit
   l.addi r11,r0,0
@@ -338,20 +338,20 @@ syst_float64_eq:
 f64eq_exit:
   l.jr r9
   l.nop
-
-  /* GCC9
+  */
+  /* GCC9 */
   l.or r17,r3,r3
   l.or r21,r5,r5
   l.or r19,r4,r4
   l.or r23,r6,r6
-  lf.sfeq.d r17,r21
+  lf.sfeq.d r17,r19,r21,r23
   l.bnf f64eq_exit
   l.addi r11,r0,0
   l.addi r11,r0,1
 f64eq_exit:
   l.jr r9
   l.nop
-  */
+
 /*
 -------------------------------------------------------------------------------
 Double A <= Double B
@@ -360,7 +360,7 @@ Double A <= Double B
   .align 4
   .global syst_float64_le
 syst_float64_le:
-  /* GCC5 */
+  /* GCC5
   lf.sfle.d r3,r5
   l.bnf  f64le_exit
   l.addi r11,r0,0
@@ -368,20 +368,20 @@ syst_float64_le:
 f64le_exit:
   l.jr r9
   l.nop
-
-  /* GCC9
+  */
+  /* GCC9 */
   l.or r17,r3,r3
   l.or r21,r5,r5
   l.or r19,r4,r4
   l.or r23,r6,r6
-  lf.sfle.d r17,r21
+  lf.sfle.d r17,r19,r21,r23
   l.bnf f64le_exit
   l.addi r11,r0,0
   l.addi r11,r0,1
 f64le_exit:
   l.jr r9
   l.nop
- */
+
 /*
 -------------------------------------------------------------------------------
 Double A < Double B
@@ -390,7 +390,7 @@ Double A < Double B
   .align 4
   .global syst_float64_lt
 syst_float64_lt:
-  /* GCC5 */
+  /* GCC5
   lf.sflt.d r3,r5
   l.bnf  f64lt_exit
   l.addi r11,r0,0
@@ -398,17 +398,17 @@ syst_float64_lt:
 f64lt_exit:
   l.jr r9
   l.nop
-
-  /* GCC9
+  */
+  /* GCC9 */
   l.or r17,r3,r3
   l.or r21,r5,r5
   l.or r19,r4,r4
   l.or r23,r6,r6
-  lf.sflt.d r17,r21
+  lf.sflt.d r17,r19,r21,r23
   l.bnf f64lt_exit
   l.addi r11,r0,0
   l.addi r11,r0,1
 f64lt_exit:
   l.jr r9
   l.nop
- */
+
